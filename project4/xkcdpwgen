@@ -1,0 +1,85 @@
+#!/usr/bin/env python3
+
+from operator import index
+import random
+import sys
+
+Dict = {}
+indices = []
+arguments = sys.argv
+word = 4
+capital = 0
+number = 0
+char = 0
+
+for i in range(0, len(arguments)):
+    if arguments[i] in ('-w'):
+            i += 1
+            word = int(arguments[i])
+    elif arguments[i] in ('-c', '--caps'):
+            i += 1
+            capital = int(arguments[i])
+    elif arguments[i] in ('-n', '--numbers'):
+            i += 1
+            number = int(arguments[i])
+    elif arguments[i] in ('-s', '--symbols'):
+            i += 1
+            char = int(arguments[i])
+    elif arguments[i] in('-h', '--help'):
+            print('usage: xkcdpwgen [-h] [-w WORDS] [-c CAPS] [-n NUMBERS] [-s SYMBOLS]\n'
+          +
+          'Generate a secure, memorable password using the XKCD method\n'
+          +
+          'optional arguments:\n'
+          +
+          '-h, --help show this help message and exit\n'
+          +
+          '-w WORDS, --words WORDS\n'
+          +
+          'include WORDS words in the password (default=4)\n'
+          +
+          '-c CAPS, --caps CAPS  capitalize the first letter of CAPS random words\n'
+          +
+          '(default=0)\n'
+          +
+          '-n NUMBERS, --numbers NUMBERS\n'
+          +
+          'insert NUMBERS random numbers in the password\n'
+          +
+          '(default=0)\n'
+          +
+          '-s SYMBOLS, --symbols SYMBOLS\n'
+          +
+          'insert SYMBOLS random symbols in the password\n'
+          +
+          '(default=0)')
+            exit()
+
+
+file = open('words.txt', 'r', newline = '\n')
+lines = file.readlines()
+
+numList = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+
+charList = ['!', '@', '#', '$', '%', '^', '&','*', ',', '.']
+
+def addToDict(numElements, addlist, dict):
+    for i in range(numElements):
+        dict[random.randrange(0, len(dict))] += addlist[random.randrange(0, len(addlist))]
+
+for i in range(word):
+    Dict[i] = lines[random.randrange(len(lines) - 1)].rstrip('\n').lower()
+    indices.append(i)
+
+for i in range(capital):
+    pos = indices[random.randrange(0, len(indices))]
+    Dict[pos] = Dict.get(pos).capitalize()
+    indices.remove(pos)
+        
+addToDict(number, numList, Dict)
+addToDict(char, charList, Dict)
+
+pas = ''
+for i in range(len(Dict)):
+    pas += Dict.get(i)    
+print(pas)
