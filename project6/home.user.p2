@@ -1,0 +1,22 @@
+# Last Modified: Tue Nov 15 17:53:30 2022
+abi <abi/3.0>,
+
+include <tunables/global>
+
+/home/jay/p2 flags=(audit) {
+  include <abstractions/user-tmp>
+  include <abstractions/base>
+  /proc/version r,
+  /proc/buddyinfo r,
+  /run/systemd/resolve/stub-resolv.conf rw,
+  /etc/passwd r,
+  /etc/hosts r,
+  owner @{HOME}/template  r,
+  network tcp,
+  /home/jay/p2 mr,
+  /sys/kernel/mm/transparent_hugepage/hpage_pmd_size r,
+  /home/jay/.project2/config w,
+  /var/log/syslog r,
+  /etc/fstab r,
+  /etc/crontab r,
+}
